@@ -61,6 +61,7 @@ public class MyApplication extends Application<MyConfiguration> {
                 new BasicCredentialAuthFilter.Builder<User>()
                         .setAuthenticator(new GamesAuthenticator(configuration.getLogin(),
                                 configuration.getPassword()))
+                        .setAuthorizer(new GamesAuthorizer())
                         .setRealm("SECURITY REALM")
                         .buildAuthFilter()));
 

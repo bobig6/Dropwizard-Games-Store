@@ -2,6 +2,7 @@ import io.dropwizard.auth.AuthenticationException;
 import io.dropwizard.auth.Authenticator;
 import io.dropwizard.auth.basic.BasicCredentials;
 
+import java.util.Arrays;
 import java.util.Optional;
 
 
@@ -21,7 +22,7 @@ public class GamesAuthenticator implements Authenticator<BasicCredentials, User>
             throws AuthenticationException {
         if (password.equals(credentials.getPassword())
                 && login.equals(credentials.getUsername())) {
-            return Optional.of(new User());
+            return Optional.of(new User(credentials.getUsername(), Arrays.asList("ADMIN")));
         } else {
             return Optional.empty();
         }

@@ -1,6 +1,7 @@
 import io.dropwizard.auth.Auth;
 import io.dropwizard.hibernate.UnitOfWork;
 
+import javax.annotation.security.RolesAllowed;
 import javax.validation.Valid;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
@@ -37,12 +38,14 @@ public class GamesResource {
     }
 
     @POST
+    @RolesAllowed("ADMIN")
     @UnitOfWork
     public void addGame(@Valid Games games) {
         gamesDAO.addGame(games);
     }
 
     @PUT
+    @RolesAllowed("ADMIN")
     @UnitOfWork
     public void updateGame(@Valid Games games) {
         gamesDAO.updateGame(games);
