@@ -5,6 +5,7 @@ import javax.validation.Valid;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import java.util.List;
+import java.util.Objects;
 
 @Path("/games")
 @Consumes({MediaType.APPLICATION_JSON})
@@ -17,44 +18,38 @@ public class GamesResource {
     }
 
     @GET
-    @Path("/")
     @UnitOfWork
-    public List<Games> findAll(@Auth User user) {
+    public List<Games> findAll(@QueryParam("name") String name, @Auth User user) {
+        if(name != null){
+            return gamesDAO.findByName(name);
+        }
         return gamesDAO.findAll();
     }
 
-    @GET
-    @Path("/{name}")
-    @UnitOfWork
-    public List<Games> findByName(@PathParam("name") String name, @Auth User user) {
-        return gamesDAO.findByName(name);
-
-    }
 
     @GET
-    @Path("/findById")
+    @Path("/{id}")
     @UnitOfWork
-    public List<Games> findById(@QueryParam("id") long id, @Auth User user) {
+    public List<Games> findById(@PathParam("id") long id, @Auth User user) {
+
         return gamesDAO.findById(id);
 
     }
 
     @POST
-    @Path("/addGame/")
     @UnitOfWork
-    public void addGame(@Auth User user, @Valid Games games) {
+    public void addGame(@Valid Games games) {
         gamesDAO.addGame(games);
     }
 
     @PUT
-    @Path("/updateGame/")
     @UnitOfWork
     public void updateGame(@Valid Games games) {
         gamesDAO.updateGame(games);
     }
 
     @DELETE
-    @Path("/deleteGame/{id}")
+    @Path("/{id}")
     @UnitOfWork
     public void deleteGame(@PathParam("id") long id, @Auth User user) {
         gamesDAO.deleteGame(id);
