@@ -6,10 +6,7 @@ import model.UserCredentials;
 import services.UserService;
 
 import javax.validation.Valid;
-import javax.ws.rs.Consumes;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
+import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 
 @Path("/auth/")
@@ -30,8 +27,12 @@ public class UserResource {
 
     @POST
     @Path("/login")
-    public String login(@Valid UserCredentials userCredentials) throws AuthenticationException {
-        return userService.loginUser(userCredentials);
+    public String login(@Valid UserCredentials userCredentials) {
+        try {
+            return userService.loginUser(userCredentials);
+        } catch (AuthenticationException e) {
+            throw new WebApplicationException("Invalid credentials", 401);
+        }
     }
 
 }

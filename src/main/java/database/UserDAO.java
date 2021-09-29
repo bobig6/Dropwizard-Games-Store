@@ -119,6 +119,10 @@ public class UserDAO{
         }
     }
 
+    public boolean checkUserCredentials(User user){
+        return !findByUsername(user.getName()).isEmpty();
+    }
+
     public User convertRSToObject(ResultSet resultSet) throws SQLException {
         User user = new User();
 

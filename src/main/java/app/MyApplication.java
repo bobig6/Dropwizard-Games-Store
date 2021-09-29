@@ -8,7 +8,6 @@ import io.dropwizard.auth.AuthValueFactoryProvider;
 import resources.GamesResource;
 import io.dropwizard.Application;
 import io.dropwizard.auth.AuthDynamicFeature;
-import io.dropwizard.auth.basic.BasicCredentialAuthFilter;
 import io.dropwizard.db.DataSourceFactory;
 import io.dropwizard.hibernate.HibernateBundle;
 import io.dropwizard.migrations.MigrationsBundle;
@@ -17,8 +16,6 @@ import io.dropwizard.setup.Environment;
 import model.Games;
 import model.User;
 import resources.UserResource;
-import services.GamesAuthenticator;
-import services.GamesAuthorizer;
 import services.UserService;
 
 

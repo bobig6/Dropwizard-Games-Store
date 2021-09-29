@@ -13,6 +13,7 @@ import model.User;
 import model.UserCredentials;
 import model.UserJwtModel;
 
+import javax.ws.rs.WebApplicationException;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.Arrays;
@@ -50,7 +51,9 @@ public class UserService implements Authenticator<UserJwtModel, User> {
     }
 
     public String registerUser(User user) {
-        // Todo: user data validation
+        if(userDAO.checkUserCredentials(user)){
+            throw new WebApplicationException("User already exists", 400);
+        }
         userDAO.addUser(user);
 
         return JWT.create()

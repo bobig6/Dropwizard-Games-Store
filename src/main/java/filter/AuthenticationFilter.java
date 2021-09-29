@@ -26,8 +26,12 @@ public class AuthenticationFilter extends AuthFilter<UserJwtModel, User> {
         try {
             String jwt = requestContext
                     .getHeaders()
-                    .getFirst("Authorization")
-                    .replaceAll("Bearer ", "");
+                    .getFirst("Authorization");
+            if (jwt != null) {
+                jwt = jwt.replaceAll("Bearer ", "");
+            } else {
+                throw new WebApplicationException("Invalid credentials", 401);
+            }
             UserJwtModel credentials = new UserJwtModel(jwt);
             authenticatedUser = authenticationService.authenticate(credentials);
         } catch (AuthenticationException e) {
