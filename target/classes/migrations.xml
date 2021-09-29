@@ -18,5 +18,16 @@
                 <constraints nullable="false"/>
             </column>
         </createTable>
+        <createTable tableName="users">
+            <column name="id" type="uuid" >
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="username" type="varchar(255)">
+                <constraints nullable="false" unique="true" />
+            </column>
+            <column name="password_hash" type="varchar(255)">
+                <constraints nullable="false" />
+            </column>
+        </createTable>
     </changeSet>
 </databaseChangeLog>

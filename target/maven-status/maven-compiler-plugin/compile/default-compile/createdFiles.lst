@@ -6,5 +6,6 @@ MyConfiguration.class
 Games.class
 User.class
 DBManager.class
+GamesAuthorizer.class
 GamesResource.class
 MyApplication$1.class
