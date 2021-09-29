@@ -2,7 +2,10 @@ package app;
 
 import config.MyConfiguration;
 import database.GamesDAO;
-import database.GamesResource;
+import database.UserDAO;
+import filter.AuthenticationFilter;
+import io.dropwizard.auth.AuthValueFactoryProvider;
+import resources.GamesResource;
 import io.dropwizard.Application;
 import io.dropwizard.auth.AuthDynamicFeature;
 import io.dropwizard.auth.basic.BasicCredentialAuthFilter;
@@ -13,8 +16,10 @@ import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
 import model.Games;
 import model.User;
+import resources.UserResource;
 import services.GamesAuthenticator;
 import services.GamesAuthorizer;
+import services.UserService;
 
 
 public class MyApplication extends Application<MyConfiguration> {
@@ -64,15 +69,23 @@ public class MyApplication extends Application<MyConfiguration> {
 
         final GamesResource gamesResource = new GamesResource(gamesDAO);
         environment.jersey().register(gamesResource);
+//        environment.jersey().register(new AuthDynamicFeature(
+//                new BasicCredentialAuthFilter.Builder<User>()
+//                        .setAuthorizer(new GamesAuthorizer())
+//                        .setRealm("SECURITY REALM")
+//                        .buildAuthFilter()));
 
 
-        environment.jersey().register(new AuthDynamicFeature(
-                new BasicCredentialAuthFilter.Builder<User>()
-                        .setAuthenticator(new GamesAuthenticator(configuration.getLogin(),
-                                configuration.getPassword()))
-                        .setAuthorizer(new GamesAuthorizer())
-                        .setRealm("SECURITY REALM")
-                        .buildAuthFilter()));
+        //User stuff
+        final UserDAO userDAO = new UserDAO();
+        final UserService authenticationService = new UserService(userDAO);
+        final UserResource authenticationResource = new UserResource(authenticationService);
+        final AuthenticationFilter authenticationFilter = new AuthenticationFilter(authenticationService);
+        environment.jersey().register(new AuthDynamicFeature(authenticationFilter));
+        environment.jersey().register(authenticationResource);
+        environment.jersey().register(new AuthValueFactoryProvider.Binder<>(User.class));
+
+
 
     }
 

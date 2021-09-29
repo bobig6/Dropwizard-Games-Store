@@ -1,4 +1,4 @@
-package database;
+package resources;
 
 import database.GamesDAO;
 import io.dropwizard.auth.Auth;
